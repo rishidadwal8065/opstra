@@ -1,0 +1,7 @@
+#Packages need to execute python script
+
+# Requests for making HTTP requests
+requests==2.26.0
+
+# Boto3 for AWS SDK
+boto3==1.18.68
