@@ -74,7 +74,7 @@ resource "aws_cloudwatch_log_group" "cloudwatch_log_group" {
 
 resource "aws_kms_alias" "kms_alias" {
   count          = var.create_kms_alias ? 1 : 0
-  name           = "alias/eks/eks-cluster-devloper"
-  target_key_id  = aws_kms_key.cluster_key[count.index].arn
+  name           = "alias/eks/eks-cluster-developer"
+  target_key_id  = length(aws_kms_key.cluster_key) > 0 ? aws_kms_key.cluster_key[0].arn : null
   depends_on     = [module.eks]
 }
