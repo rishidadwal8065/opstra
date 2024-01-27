@@ -1,6 +1,10 @@
+data "aws_iam_role" "existing_role" {
+  name = "eks-cluster-role"
+}
 
 resource "aws_iam_role" "eks_cluster" {
   name = "eks-cluster-role"
+  count = data.aws_iam_role.existing_role ? 0 : 1
 
   assume_role_policy = <<POLICY
 {
@@ -16,6 +20,7 @@ resource "aws_iam_role" "eks_cluster" {
   ]
 }
 POLICY
+  depends_on = [module.eks]
 }
 
 resource "aws_db_instance" "database" {
