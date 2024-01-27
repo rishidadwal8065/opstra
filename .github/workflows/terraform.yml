@@ -30,11 +30,6 @@ jobs:
           terraform init
           terraform --version  # Display Terraform version for debugging
 
-      - name: Initialize Terraform
-        run: |
-          terraform init
-          terraform --version  # Display Terraform version for debugging
-
       - name: Configure AWS CLI
         run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && \
