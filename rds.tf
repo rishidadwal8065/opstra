@@ -24,6 +24,7 @@ POLICY
 }
 
 resource "aws_db_instance" "database" {
+  count = var.create_rds ? 1 : 0
   identifier            = "portal26-${var.tenant_name}"
   allocated_storage     = 20
   engine                = "postgres"
@@ -64,3 +65,18 @@ resource "aws_s3_bucket" "s3_bucket" {
   bucket = "portal26-${var.tenant_name}-unique"  # Adjust to ensure uniqueness
 }
 
+resource "aws_cloudwatch_log_group" "cloudwatch_log_group" {
+  count = var.create_log_group ? 1 : 0  
+}
+
+resource "aws_kms_alias" "kms_alias" {
+  count = var.create_kms_alias ? 1 : 0  
+}
+
+ resource "aws_s3_bucket" "s3_bucket" {
+  count = var.create_s3_bucket ? 1 : 0  
+}
+
+resource "aws_secretsmanager_secret" "db_credentials" {
+  count = var.create_secrets_manager ? 1 : 0  
+}
