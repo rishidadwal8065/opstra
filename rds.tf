@@ -69,11 +69,11 @@ resource "aws_s3_bucket" "s3_bucket" {
 }
 
 resource "aws_cloudwatch_log_group" "cloudwatch_log_group" {
-  count = var.create_log_group && length(module.eks.aws_cloudwatch_log_group.this) == 0 ? 1 : 0
+  count = var.create_log_group && can(module.eks.aws_cloudwatch_log_group.this[0]) ? 1 : 0
 }
 
 resource "aws_kms_alias" "kms_alias" {
-  count = var.create_kms_alias && length(module.eks.module.kms.aws_kms_alias.this["cluster"]) == 0 ? 1 : 0
+  count = var.create_kms_alias && can(module.eks.module.kms.aws_kms_alias.this["cluster"][0]) ? 1 : 0
   name  = "alias/eks/eks-cluster-developer"
   target_key_id = length(module.eks.kms_key_arn) > 0 ? module.eks.kms_key_arn[0] : null
   depends_on = [module.eks]
