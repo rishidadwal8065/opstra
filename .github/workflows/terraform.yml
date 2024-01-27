@@ -73,8 +73,8 @@ jobs:
           curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
           sudo mv /tmp/eksctl /usr/local/bin
 
-      - name: Set KUBECONFIG
-        run: echo "::set-env name=KUBECONFIG::/home/runner/.kube/config"
+      # - name: Set KUBECONFIG
+      #   run: echo "::set-env name=KUBECONFIG::/home/runner/.kube/config"
 
       - name: test KUBECONFIG
         run: ls /home/runner/.kube/config          
