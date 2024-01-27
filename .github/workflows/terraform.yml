@@ -76,11 +76,11 @@ jobs:
       # - name: Set KUBECONFIG
       #   run: echo "::set-env name=KUBECONFIG::/home/runner/.kube/config"
 
-      - name: test KUBECONFIG
-        run: ls /home/runner/.kube/config          
+      # - name: test KUBECONFIG
+      #   run: ls /home/runner/.kube/config          
 
-      # - name: Terraform Plan
-      #   run: terraform plan -var="tenant_name=opstra"
+      - name: Terraform Plan
+        run: terraform plan -var="tenant_name=opstra"
 
       #    # On push to "main", build or change infrastructure according to Terraform configuration files
       #    # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
