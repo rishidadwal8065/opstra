@@ -54,7 +54,8 @@ resource "aws_secretsmanager_secret" "db_credentials" {
 }
 
 resource "aws_secretsmanager_secret_version" "db_credentials" {
-  secret_id = aws_secretsmanager_secret.db_credentials.id
+  count        = var.create_secrets_manager ? 1 : 0
+  secret_id    = aws_secretsmanager_secret.db_credentials[count.index].id
   secret_string = jsonencode({
     username = "opstra"
     password = "ValidPassword123!"
@@ -72,5 +73,8 @@ resource "aws_cloudwatch_log_group" "cloudwatch_log_group" {
 }
 
 resource "aws_kms_alias" "kms_alias" {
-  count = var.create_kms_alias ? 1 : 0  
+  count          = var.create_kms_alias ? 1 : 0
+  name           = "alias/eks/eks-cluster-devloper"
+  target_key_id  = aws_kms_key.kms_key[count.index].arn
+  depends_on     = [module.eks]
 }
