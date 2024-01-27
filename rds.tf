@@ -49,6 +49,7 @@ resource "aws_db_instance" "database" {
 }
 
 resource "aws_secretsmanager_secret" "db_credentials" {
+  count = var.create_secrets_manager ? 1 : 0  
   name = "portal26-${var.tenant_name}-db-credentials"
 }
 
@@ -62,6 +63,7 @@ resource "aws_secretsmanager_secret_version" "db_credentials" {
 
 
 resource "aws_s3_bucket" "s3_bucket" {
+    count = var.create_s3_bucket ? 1 : 0  
   bucket = "portal26-${var.tenant_name}-unique"  # Adjust to ensure uniqueness
 }
 
@@ -71,12 +73,4 @@ resource "aws_cloudwatch_log_group" "cloudwatch_log_group" {
 
 resource "aws_kms_alias" "kms_alias" {
   count = var.create_kms_alias ? 1 : 0  
-}
-
- resource "aws_s3_bucket" "s3_bucket" {
-  count = var.create_s3_bucket ? 1 : 0  
-}
-
-resource "aws_secretsmanager_secret" "db_credentials" {
-  count = var.create_secrets_manager ? 1 : 0  
 }
