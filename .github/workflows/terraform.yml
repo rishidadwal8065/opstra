@@ -80,7 +80,7 @@ jobs:
       #   run: ls /home/runner/.kube/config          
 
       - name: Terraform apply
-        run: terraform apply -var="tenant_name=opstra"
+        run: terraform plan -var="tenant_name=opstra"
 
       #    # On push to "main", build or change infrastructure according to Terraform configuration files
       #    # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
