@@ -35,9 +35,3 @@ variable "create_log_group" {
   type        = bool
   default     = true
 }
-
-variable "tenant_name" {
-  description = "Name of the tenant for various resources"
-  type        = string
-  default     = "opstra"  # Update with your desired default value
-}
