@@ -64,23 +64,28 @@ jobs:
           EOF
           bash configure_script.sh
 
-      - name: Configure AWS CLI
+      - name: AWS CLI Check 
         run: |
-          |
-          AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
-          AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          AWS_REGION="us-east-1"
+          aws configure list
+          terraform --version  # Display Terraform version for debugging
+
+      # - name: Configure AWS CLI
+      #   run: |
+      #     |
+      #     AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
+      #     AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+      #     AWS_REGION="us-east-1"
           
-          aws configure set aws_access_key_id "${AWS_ACCESS_KEY_ID}" &&
-          aws configure set aws_secret_access_key "${AWS_SECRET_ACCESS_KEY}" &&
-          aws configure set region "${AWS_REGION}"
+      #     aws configure set aws_access_key_id "${AWS_ACCESS_KEY_ID}" &&
+      #     aws configure set aws_secret_access_key "${AWS_SECRET_ACCESS_KEY}" &&
+      #     aws configure set region "${AWS_REGION}"
 
 
-      - name: Configure AWS CLI
-        run: echo "aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}" >> configure_script.sh && \
-            echo "aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> configure_script.sh && \
-            echo "aws configure set region us-east-1" >> configure_script.sh && \
-            bash configure_script.sh
+      # - name: Configure AWS CLI
+      #   run: echo "aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}" >> configure_script.sh && \
+      #       echo "aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> configure_script.sh && \
+      #       echo "aws configure set region us-east-1" >> configure_script.sh && \
+      #       bash configure_script.sh
 
 
       - name: Install eksctl
