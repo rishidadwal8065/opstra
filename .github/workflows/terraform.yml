@@ -35,11 +35,33 @@ jobs:
           terraform init
           terraform --version  # Display Terraform version for debugging
 
-      - name: Terraform Plan
-        run: terraform plan -var="tenant_name=opstra"
 
-         # On push to "main", build or change infrastructure according to Terraform configuration files
-         # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-        run: terraform apply  -var="tenant_name=opstra" -auto-approve
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1  # Update with your AWS region
+
+      - name: Install eksctl
+        run: |
+          curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+          sudo mv /tmp/eksctl /usr/local/bin
+
+      - name: Configure AWS CLI
+        run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set region us-east-1
+
+      - name: Set KUBECONFIG
+        run: echo "::set-env name=KUBECONFIG::/home/runner/.kube/config"
+
+      - name: test KUBECONFIG
+        run: ls /home/runner/.kube/config          
+
+      # - name: Terraform Plan
+      #   run: terraform plan -var="tenant_name=opstra"
+
+      #    # On push to "main", build or change infrastructure according to Terraform configuration files
+      #    # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+      # - name: Terraform Apply
+      #   if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
+      #   run: terraform apply  -var="tenant_name=opstra" -auto-approve
