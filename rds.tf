@@ -4,7 +4,7 @@ data "aws_iam_role" "existing_role" {
 
 resource "aws_iam_role" "eks_cluster" {
   name = "eks-cluster-role"
-  count = data.aws_iam_role.existing_role ? 0 : 1
+  count = length(data.aws_iam_role.existing_role) > 0 ? 0 : 1
 
   assume_role_policy = <<POLICY
 {
