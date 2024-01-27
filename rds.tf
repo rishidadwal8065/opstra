@@ -24,7 +24,7 @@ POLICY
 }
 
 resource "aws_db_instance" "database" {
-  count                 = var.create_rds && !aws_db_instance.database[0] ? 1 : 0
+  count                 = var.create_rds ? 1 : 0
   identifier            = "portal26-${var.tenant_name}"
   allocated_storage     = 20
   engine                = "postgres"
@@ -54,7 +54,7 @@ resource "aws_secretsmanager_secret" "db_credentials" {
 }
 
 resource "aws_secretsmanager_secret_version" "db_credentials" {
-  count = var.create_secrets_manager && !aws_secretsmanager_secret.db_credentials[0] ? 1 : 0
+  count = var.create_secrets_manager ? 1 : 0
   secret_id    = aws_secretsmanager_secret.db_credentials[count.index].id
   secret_string = jsonencode({
     username = "opstra"
@@ -64,7 +64,7 @@ resource "aws_secretsmanager_secret_version" "db_credentials" {
 
 
 resource "aws_s3_bucket" "s3_bucket" {
-  count  = var.create_s3_bucket && !aws_s3_bucket.s3_bucket[0] ? 1 : 0
+  count  = var.create_s3_bucket ? 1 : 0
   bucket = "portal26-${var.tenant_name}-unique"  # Adjust to ensure uniqueness
 }
 
