@@ -59,3 +59,12 @@ resource "aws_route53_zone" "arcstone_zone" {
   depends_on = [module.eks]
 }
 
+data "aws_cloudwatch_log_groups" "existing_log_groups" {
+  name_prefix = "/aws/eks/eks-cluster-devloper/cluster"
+}
+
+resource "aws_cloudwatch_log_group" "this" {
+  count = length(data.aws_cloudwatch_log_groups.existing_log_groups.names) > 0 ? 0 : 1
+  name  = "/aws/eks/eks-cluster-devloper/cluster"
+
+}
