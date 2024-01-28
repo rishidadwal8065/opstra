@@ -4,4 +4,4 @@
 requests==2.26.0
 
 # Boto3 for AWS SDK
-boto3==1.18.68
+boto3==1.17.68
