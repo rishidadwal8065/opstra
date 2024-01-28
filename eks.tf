@@ -15,7 +15,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket         = "portal26-tf-rishi"
+    bucket         = "portal26-tf-rishia"
     key            = "terraform.tfstate"
     region         = "us-east-1"
     encrypt        = true
