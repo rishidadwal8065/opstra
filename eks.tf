@@ -107,7 +107,7 @@ resource "aws_db_instance" "rds_instance" {
   instance_class       = "db.r5.large"
   username             = "dbmaster"
   password             = "ValidPassword123!"
-  availability_zone    = "us-east-1" # Replace with your desired availability zone
+  availability_zone    = "us-east-1c" # Replace with your desired availability zone
   publicly_accessible  = false
   final_snapshot_identifier = "final-snapshot-${var.tenant_name}"
 
