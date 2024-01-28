@@ -3,7 +3,7 @@ name: Terraform Deployment
 on:
   push:
     branches:
-      - main  # Adjust this branch name as needed
+      - feature  # Adjust this branch name as needed
 
 jobs:
   deploy:
@@ -72,7 +72,13 @@ jobs:
         run: |
           curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
           sudo mv /tmp/eksctl /usr/local/bin
+      
+      - name: AWS REGION
+        run: aws configure get region
 
+      - name: Terraform Apply
+        # if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
+        run: terraform refresh -var="tenant_name=opstra"
       # - name: Set KUBECONFIG
       #   run: echo "::set-env name=KUBECONFIG::/home/runner/.kube/config"
 
@@ -86,7 +92,7 @@ jobs:
          # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
       - name: Terraform Apply
         # if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-        run: terraform destroy  -var="tenant_name=opstra" -auto-approve
+        run: terraform apply  -var="tenant_name=opstra" -auto-approve
 
       # - name: Setup kubectl
       #   uses: azure/k8s-set-context@v1
@@ -94,10 +100,20 @@ jobs:
       #     kubeconfig: ${{ secrets.KUBE_CONFIG }}
       #     version: '1.19.7'
 
-      # - name: Configure AWS CLI
-      #   run: |
-      #     aws eks --region us-east-1 update-kubeconfig --name eks-cluster-devloper
+      - name: Configure AWS CLI
+        run: |
+          aws eks --region us-east-1 update-kubeconfig --name eks-cluster-devloper
 
-      # - name: Deploy to EKS
-      #   run: kubectl apply -f hello-world-deployment.yaml
+      - name: Deploy to EKS
+        run: kubectl apply -f hello-world-deployment.yaml
 
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt  # If you have any dependencies
+
+      - name: Execute Python Script
+        run: python script.py
