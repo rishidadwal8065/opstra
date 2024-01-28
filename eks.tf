@@ -61,9 +61,9 @@ module "eks" {
 # }
 
 
-# Create an AWS Route 53 DNS zone for "arcstone.ai"
-resource "aws_route53_zone" "arcstone_zone" {
-  name = "arcstone.ai"
-  force_destroy = true
-  depends_on = [module.eks]
-}
+# # Create an AWS Route 53 DNS zone for "arcstone.ai"
+# resource "aws_route53_zone" "arcstone_zone" {
+#   name = "arcstone.ai"
+#   force_destroy = true
+#   depends_on = [module.eks]
+# }

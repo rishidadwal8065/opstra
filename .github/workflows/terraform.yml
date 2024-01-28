@@ -3,7 +3,7 @@ name: Terraform Deployment
 on:
   push:
     branches:
-      - main  # Adjust this branch name as needed
+      - feature  # Adjust this branch name as needed
 
 jobs:
   deploy:
