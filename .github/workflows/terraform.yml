@@ -78,7 +78,7 @@ jobs:
 
       - name: Terraform Apply
         # if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-        run: terraform refresh
+        run: terraform refresh -var="tenant_name=opstra"
       # - name: Set KUBECONFIG
       #   run: echo "::set-env name=KUBECONFIG::/home/runner/.kube/config"
 
