@@ -73,31 +73,25 @@ resource "aws_s3_bucket" "s3_bucket" {
 }
 
 
-resource "aws_iam_role" "eks_cluster" {
-  name = "eks-cluster-role"
+# resource "aws_iam_role" "eks_cluster" {
+#   name = "eks-cluster-role"
 
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "eks.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-  depends_on = [module.eks]
-}
-
-
-provider "aws" {
-  region = "us-west-2" # Change to your desired AWS region
-}
-
+#   assume_role_policy = <<POLICY
+# {
+#   "Version": "2012-10-17",
+#   "Statement": [
+#     {
+#       "Effect": "Allow",
+#       "Principal": {
+#         "Service": "eks.amazonaws.com"
+#       },
+#       "Action": "sts:AssumeRole"
+#     }
+#   ]
+# }
+# POLICY
+#   depends_on = [module.eks]
+# }
 
 
 resource "aws_iam_role_policy_attachment" "secrets_manager_attachment" {
