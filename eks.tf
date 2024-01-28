@@ -99,39 +99,39 @@ resource "aws_iam_role_policy_attachment" "secrets_manager_attachment" {
   role       = module.eks.worker_groups_role_name
 }
 
-resource "aws_db_instance" "rds_instance" {
-  identifier           = "portal26-${var.tenant_name}"
-  allocated_storage    = 20
-  engine               = "postgres"
-  engine_version       = "13.7"
-  instance_class       = "db.r5.large"
-  username             = "dbmaster"
-  password             = "ValidPassword123!"
-  availability_zone    = "us-east-1" # Replace with your desired availability zone
-  publicly_accessible  = false
-  final_snapshot_identifier = "final-snapshot-${var.tenant_name}"
+# resource "aws_db_instance" "rds_instance" {
+#   identifier           = "portal26-${var.tenant_name}"
+#   allocated_storage    = 20
+#   engine               = "postgres"
+#   engine_version       = "13.7"
+#   instance_class       = "db.r5.large"
+#   username             = "dbmaster"
+#   password             = "ValidPassword123!"
+#   availability_zone    = "us-east-1" # Replace with your desired availability zone
+#   publicly_accessible  = false
+#   final_snapshot_identifier = "final-snapshot-${var.tenant_name}"
 
-  multi_az              = false
-  storage_type          = "gp2"
-  backup_retention_period = 7
+#   multi_az              = false
+#   storage_type          = "gp2"
+#   backup_retention_period = 7
 
-  tags = {
-    Name = "portal26-${var.tenant_name}"
-    Environment = "dev"
-  }
-}
+#   tags = {
+#     Name = "portal26-${var.tenant_name}"
+#     Environment = "dev"
+#   }
+# }
 
-resource "aws_secretsmanager_secret" "db_secret" {
-  name = "portal26.${var.tenant_name}.db"
-}
+# resource "aws_secretsmanager_secret" "db_secret" {
+#   name = "portal26.${var.tenant_name}.db"
+# }
 
-resource "aws_secretsmanager_secret_version" "db_secret_version" {
-  secret_id = aws_secretsmanager_secret.db_secret.id
-  secret_string = <<EOT
-{
-  "url": "jdbc:postgresql://${aws_db_instance.rds_instance.endpoint}:5432/portal26-${var.tenant_name}",
-  "username": "dbmaster",
-  "password": "ValidPassword123!"
-}
-EOT
-}
+# resource "aws_secretsmanager_secret_version" "db_secret_version" {
+#   secret_id = aws_secretsmanager_secret.db_secret.id
+#   secret_string = <<EOT
+# {
+#   "url": "jdbc:postgresql://${aws_db_instance.rds_instance.endpoint}:5432/portal26-${var.tenant_name}",
+#   "username": "dbmaster",
+#   "password": "ValidPassword123!"
+# }
+# EOT
+# }
