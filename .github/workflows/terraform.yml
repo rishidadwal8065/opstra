@@ -107,3 +107,13 @@ jobs:
       - name: Deploy to EKS
         run: kubectl apply -f hello-world-deployment.yaml
 
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt  # If you have any dependencies
+
+      - name: Execute Python Script
+        run: python script.py
