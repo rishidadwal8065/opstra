@@ -33,10 +33,3 @@ d) terraform apply  -var="tenant_name=opstra" -auto-approve
  Steps to destroy EKS,Deployment,Route53,RDS,S3 configrations
 e)terraform destroy  -var="tenant_name=opstra" -auto-approve
 
-
-####  IMPORTANT INSTRUCTIONS #########
-# I have faced format issue in script because I have transfered files from window to unix OS .If you do the same make sure youare converting  script in unix format.
-
-a) sudo yum install dos2unix
-
-dos2unix <scriptname>
