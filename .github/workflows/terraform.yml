@@ -76,6 +76,9 @@ jobs:
       - name: AWS REGION
         run: aws configure get region
 
+      - name: Terraform Apply
+        # if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
+        run: terraform refresh
       # - name: Set KUBECONFIG
       #   run: echo "::set-env name=KUBECONFIG::/home/runner/.kube/config"
 
