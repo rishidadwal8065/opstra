@@ -13,6 +13,15 @@ provider "aws" {
 #   }
 # }
 
+terraform {
+  backend "s3" {
+    bucket         = "portal26-tf-rishi"
+    key            = "terraform.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
+  }
+}
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.15.3"
