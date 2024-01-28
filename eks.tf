@@ -59,12 +59,37 @@ resource "aws_route53_zone" "arcstone_zone" {
   depends_on = [module.eks]
 }
 
+variable "log_group_name" {
+  default = "/aws/eks/eks-cluster-devloper/cluster"
+}
+
 data "aws_cloudwatch_log_groups" "existing_log_groups" {
-  name_prefix = "/aws/eks/eks-cluster-devloper/cluster"
+  filter {
+    name   = "logGroupName"
+    values = [var.log_group_name]
+  }
+}
+
+locals {
+  log_group_exists = length(data.aws_cloudwatch_log_groups.existing_log_groups.names) > 0
+}
+
+resource "null_resource" "create_log_group" {
+  count = local.log_group_exists ? 0 : 1
+
+  triggers = {
+    log_group_name = var.log_group_name
+  }
+
+  provisioner "local-exec" {
+    command = "echo 'Creating log group: ${var.log_group_name}'"
+  }
 }
 
 resource "aws_cloudwatch_log_group" "this" {
-  count = length(data.aws_cloudwatch_log_groups.existing_log_groups.names) > 0 ? 0 : 1
-  name  = "/aws/eks/eks-cluster-devloper/cluster"
+  name = var.log_group_name
 
+  # other log group configurations...
+
+  depends_on = [null_resource.create_log_group]
 }
